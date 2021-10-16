@@ -1,0 +1,483 @@
+<div class="container mt-3">
+  <div
+    class="col d-flex justify-content-end"
+    (mouseleave)="downloadOptions = false"
+  >
+    <div *ngIf="downloadOptions" class="downMenu">
+      <button class="btn btn-sm bg-dark text-white px-3 my-1">PDF</button>
+      <button
+        class="btn btn-sm bg-dark text-white px-3 my-1" id = "childSpacing"
+      >
+        CSV
+      </button>
+      <button
+        class="btn btn-sm bg-dark text-white px-3 my-1" id = "childSpacing"
+      >
+        EXCEL
+      </button>
+    </div>
+    <button
+      (click)="downloadOptions = !downloadOptions"
+      (mouseenter)="downloadOptions = true"
+      class="btn btn-sm bg-dark text-white pull-right ml-2 my-1 download"
+    >
+      <i class="fa fa-download mr-1"></i> DOWNLOAD
+    </button>
+  </div>
+  <!-- <button class="btn btn-sm bg-dark text-white px-3">
+        <i class="fa fa-download mr-1"></i> DOWNLOAD
+      </button> -->
+
+  <div class="row mt-3">
+    <ag-grid-angular
+      style="width: 100%; height: 100vh"
+      class="ag-theme-alpine"
+      [rowData]="allBanking"
+      [columnDefs]="columnDefs"
+      [rowSelection]="'multiple'"
+      [defaultColDef]="defaultColDef"
+      [gridOptions]="gridOptions"
+    >
+    </ag-grid-angular>
+  </div>
+
+  <!--Edit Banking-->
+
+  <!--Edit Banking-->
+
+  <ng-template #editContent let-data let-modal>
+    <div class="modal-body">
+        <form class="example-form" [formGroup]="editForm">
+            <div class="d-flex justify-content-between">
+              <h5 class="">
+                <span (click)="modal.dismiss()" style="cursor: pointer">
+                  <i class="fa fa-arrow-left arrow"></i>
+                </span>
+                <b> Edit Banking </b>
+              </h5>
+              <button
+                type="submit"
+                class="btn btn-sm btn-dark mr-3 align-self-end mb-3"
+                style="width: 100px; height: 30px"
+                (click)="submitEditBanking(); modal.dismiss()"
+              >
+                UPDATE
+              </button>
+            </div>
+            <div class="row">
+              <div
+                class="col-md-12"
+                style="padding-top: 35px; padding-left: 65px"
+              >
+                <div class="row" *ngIf="editBankingObj">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="sheet_date" style="font-size: 16px">
+                        Date
+                      </label>
+                      <input
+                        required
+                        type="date"
+                        class="form-control"
+                        formControlName="sheet_date"
+                        id="sheet_date"
+                        name="sheet_date"
+                        style="
+                          width: 200px;
+                          height: 36px;
+                          border-style: solid;
+                          border-color: white white black white;
+                        "
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="giro_slip" style="font-size: 16px">
+                        Giro Slip Number
+                      </label>
+                      <input
+                        required
+                        type="number"
+                        class="form-control"
+                        formControlName="giro_slip"
+                        id="giro_slip"
+                        name="giro_slip"
+                        style="
+                          width: 200px;
+                          height: 36px;
+                          border-style: solid;
+                          border-color: white white black white;
+                        "
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row" style="padding-top: 40px">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="banking_total" style="font-size: 16px">
+                        Banking Total
+                      </label>
+                      <div class="icon">
+                        <i class="fas fa-pound-sign" style="top: 29px; position: relative;"></i>
+                        <input 
+                          required 
+                          type="number" 
+                          class="form-control" 
+                          id="banking_total" 
+                          name="banking_total"
+                          placeholder="" 
+                          formControlName="banking_total" 
+                          value="" 
+                          style="
+                          width: 200px;
+                          height: 36px;
+                          border-style: solid;
+                          border-color: white white black white;
+                        " />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="banked_total" style="font-size: 16px">
+                        Banked Total
+                      </label>
+                      <div class="icon">
+                        <i class="fas fa-pound-sign" style="top: 29px; position: relative;"></i>
+                        <input 
+                          required 
+                          type="number" 
+                          class="form-control" 
+                          id="banked_total" 
+                          name="banked_total"
+                          placeholder="" 
+                          formControlName="banked_total" 
+                          value="" 
+                          style="
+                          width: 200px;
+                          height: 36px;
+                          border-style: solid;
+                          border-color: white white black white;
+                        " />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row" style="padding-top: 40px">
+                  <div class="col-md-6">
+                    <select
+                      class="btn btn-sm btn-light"
+                      id="sealed_by"
+                      name="sealed_by"
+                      #sealed_by
+                    >
+                      <option *ngFor="let d of allBanking" [value]="toStr(d)">
+                        {{ d.sealed_by }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="sheet" style="padding-top: 50px">
+                  <h6 class="sub-heading">
+                    <b> Selected Sheet Date </b>
+                  </h6>
+                  <div class="row" style="padding-top: 20px">
+                    <div
+                      class="col-md-3 sheet-date"
+                      *ngFor="let d of selectedDeposits"
+                    >
+                      <p class="value">
+                        {{ d.sheet_date | date: "mediumDate" }}
+                        <button type="button" class="close" aria-label="Close">
+                          <span aria-hidden="true" (click)="removeDeposit(d)">
+                            &times;
+                          </span>
+                        </button>
+                      </p>
+                    </div>
+                  </div>
+
+                  <br />
+
+                  <select
+                    class="btn btn-sm btn-dark"
+                    id="selected_deposits"
+                    #selDate
+                  >
+                    <option *ngFor="let dep of allDeposit" [value]="toStr(dep)">
+                      {{ dep.sheet_date | date: "mediumDate" }}
+                    </option>
+                  </select>
+
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-dark ml-2"
+                    (click)="addSelectedDeposit(selDate.value)"
+                  >
+                    <i class="fa fa-plus"></i> ADD
+                  </button>
+                </div>
+              </div>
+            </div>
+        </form>
+      </div>
+  </ng-template>
+
+  <!--View Banking-->
+  <ng-template #viewContent let-data let-modal>
+    <div class="modal-body">
+        <div class="d-flex justify-content-between" *ngIf="viewBankingObj">
+          <h5 class="">
+            <span (click)="modal.dismiss()" style="cursor: pointer">
+              <i class="fa fa-arrow-left arrow"></i>
+            </span>
+            <b> View Banking </b>
+          </h5>
+
+          <div
+            class="col d-flex justify-content-end"
+            style="padding-top: 36px; padding-left: -50px;"
+            (mouseleave)="downloadOptions = false"
+          >
+            <div *ngIf="downloadOptions" class="downMenu">
+              <button class="btn btn-sm bg-dark text-white px-3 my-1">PDF</button>
+              <button
+                class="btn btn-sm bg-dark text-white px-3 my-1"
+                style="margin-left: 10px"
+              >
+                CSV
+              </button>
+              <button
+                class="btn btn-sm bg-dark text-white px-3 my-1"
+                style="margin-left: 10px"
+              >
+                EXCEL
+              </button>
+            </div>
+            <button
+              (click)="downloadOptions = !downloadOptions"
+              (mouseenter)="downloadOptions = true"
+              class="btn btn-sm bg-dark text-white pull-right ml-2 my-1 download"
+              style="width: 120px; height: 35px;"
+            >
+              <i class="fa fa-download mr-1"></i> DOWNLOAD
+            </button>
+         </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12" style="padding-top: 35px; padding-left: 65px">
+            <div class="row">
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label for="start" style="font-size: 16px"
+                      >Selected Deposit Date:</label
+                    >
+                  </div>
+                </form>
+              </div>
+
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label
+                      for="start"
+                      style="font-size: 16px; display: block"
+                      *ngFor="let d of viewBankingObj.cashup_sheets"
+                    >
+                      {{ d.sheet_date | date: "mediumDate" }}, 
+                      {{ d.sheet_date | date: 'h:a' }}
+                    </label>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label for="start" style="font-size: 16px"
+                      >Banking Sheet Date:</label
+                    >
+                  </div>
+                </form>
+              </div>
+
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label for="start" style="font-size: 16px"
+                      >{{ viewBankingObj.sheet_date | date: "mediumDate" }}
+                    </label>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label for="start" style="font-size: 16px">
+                      Giro Slip Number:
+                    </label>
+                  </div>
+                </form>
+              </div>
+
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label for="start" style="font-size: 16px">
+                      {{ viewBankingObj.giro_slip }}
+                    </label>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label for="start" style="font-size: 16px"
+                      >Banking Total:</label
+                    >
+                  </div>
+                </form>
+              </div>
+
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label for="start" style="font-size: 16px">
+                      {{ viewBankingObj.banking_total | currency: "GBP" }}
+                    </label>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label for="start" style="font-size: 16px">
+                      Banked Total:
+                    </label>
+                  </div>
+                </form>
+              </div>
+
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label for="start" style="font-size: 16px">
+                      {{ viewBankingObj.banked_total | currency: "GBP" }}
+                    </label>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label for="start" style="font-size: 16px">Sealed By:</label>
+                  </div>
+                </form>
+              </div>
+
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label for="start" style="font-size: 16px">
+                      {{ viewBankingObj.sealed_by }}
+                    </label>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="viewBankingObj.reason.length > 0">
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label for="start" style="font-size: 16px">
+                      Reason for Difference:
+                    </label>
+                  </div>
+                </form>
+              </div>
+
+              <div class="col-md-6">
+                <form class="example-form">
+                  <div class="form-group">
+                    <label for="start" style="font-size: 16px">
+                      {{ viewBankingObj.reason }}
+                    </label>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div class="row" style="padding-top: 200px">
+              <button
+                type="button"
+                class="btn btn-outline-dark mr-3"
+                style="height: 35px"
+                (click)="modal.dismiss(); editBanking(viewBankingObj)"
+              >
+                <i class="fa fa-pencil-alt"></i> Edit
+              </button>
+
+              <button
+                type="button"
+                (click)="modal.dismiss(); deleteBanking(viewBankingObj)"
+                class="btn btn-outline-dark"
+                style="height: 35px"
+              >
+                <i class="fa fa-trash" aria-hidden="true"></i> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </ng-template>
+
+  <!-- Delete Banking -->
+  <ng-template #deleteContent let-data let-ref="dialogRef">
+    <div class="card">
+      <div class="card-body deleteCard d-flex flex-column text-center">
+        <div style="text-align: end">
+          <i
+            class="fa fa-times"
+            (click)="ref.close()"
+            style="cursor: pointer"
+          ></i>
+        </div>
+        <div class=""><i class="fa fa-2x fa-trash"></i></div>
+        <h4 class="mt-4">Delete Banking</h4>
+
+        <div class="mt-2">
+          <button
+            class="btn btn-sm btn-dark"
+            style="width: 100px"
+            (click)="deleteBankingData(deleteBankingObj); ref.close()"
+          >
+            <i class="fa fa-trash" aria-hidden="true"></i> Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

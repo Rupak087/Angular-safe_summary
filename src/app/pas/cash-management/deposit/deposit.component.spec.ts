@@ -1,0 +1,32 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { DepositComponent } from './deposit.component';
+
+describe('DepositComponent', () => {
+  let component: DepositComponent;
+  let fixture: ComponentFixture<DepositComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ DepositComponent ],
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DepositComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should render title in a h4 tag', () => { 
+    const fixture = TestBed.createComponent(DepositComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h4').textContent).toContain('Safe Summary');
+  });
+});

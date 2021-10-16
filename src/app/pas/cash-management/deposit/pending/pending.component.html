@@ -1,0 +1,242 @@
+<div class="container mt-3">
+  <div class="row d-flex justify-content-end">
+    <button
+      class="btn btn-sm bg-dark text-white px-3"
+      (click)="createSafeSummaryModal() "
+    >
+      <i class="fa fa-plus mr-1"></i> ADD NEW
+    </button>
+  </div>
+  <div class="row mt-3">
+    <ag-grid-angular
+      style="width: 100%; height: 400px"
+      class="ag-theme-alpine"
+      [rowData]="allDeposit"
+      [columnDefs]="columnDefs"
+      [rowSelection]="'multiple'"
+      [defaultColDef]="defaultColDef"
+      (gridReady)="onGridReady($event)"
+    >
+    </ag-grid-angular>
+  </div>
+</div>
+
+<!--Add Safe Summary -->
+
+<div class="dialog">
+  <ng-template #editContent let-data let-modal>
+    <form class="example-form" [formGroup]="safesummaryForm">
+      <div class="container1 container">
+        <div class="d-flex justify-content-between pt-4">
+          <h5 class="">
+            <span (click)="modal.dismiss()" style="cursor: pointer">
+              <i class="fa fa-arrow-left arrow"></i>
+            </span>
+            <b> Add Safe Summary</b>
+          </h5>
+          <button
+            type="button"
+            class="btn btn-sm btn-dark mr-3 align-self-end mb-3"
+            style="width: 100px; height: 30px"
+            (click)="submitSafeSummary(); modal.dismiss()"
+          >
+            SUBMIT
+          </button>
+        </div>
+        <div class="row">
+          <div class="col-md-12" style="padding-top: 35px; padding-left: 65px">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="transactionDate" style="font-size: 16px;margin-left: -12px;"> Date </label>
+                  <input
+                    required
+                    type="text"
+                    class="form-control"
+                    id="transactionDate"
+                    name="transactionDate"
+                    formControlName="transaction_date"
+                    placeholder="2021-Mar-20"
+                    value=""
+                    style="
+                      width: 200px;
+                      height: 37px;
+                      margin-left: -12px;
+                      border-style: solid;
+                      border-color: white white black white;
+                    "
+                  />
+                </div>
+              </div>
+
+              <div class="row" style="padding-top: 10px">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="witness" style="font-size: 16px">
+                      Witness
+                    </label>
+                    <br />
+                    <select
+                      name="witness"
+                      id="witness"
+                      class="btn btn-sm btn-light"
+                      value="John Doe"
+                      formControlName="witness"
+                    >
+                      <option value="Jenny Path" selected>Jenny Path</option>
+                      <option value="John Doe">John Doe </option>
+                      <option value="Alex Doe">Alex Doe</option>
+                      <option value="Cain Brock">Cain Brock</option>
+                      <option value="David Haim">David Haim</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <div class="icon">
+                  <i
+                      class="fas fa-pound-sign"
+                      style="top: 29px; position: relative"
+                    ></i>
+                  <input
+                    required
+                    type="number"
+                    class="form-control"
+                    id="safeFloat"
+                    name="safeFloat"
+                    value=""
+                    formControlName="safe_float"
+                    placeholder=" Safe Float"
+                    style="
+                      width: 200px;
+                      height: 37px;
+                      border-style: solid;
+                      border-color: white white black white;
+                    "
+                  />
+                </div>
+              </div>
+              </div>
+            
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <div class="icon">
+                  <i
+                      class="fas fa-pound-sign"
+                      style="top: 29px; position: relative;margin-left: 36px;"
+                    ></i>
+                <input
+                  required
+                  type="number"
+                  class="form-control"
+                  id="tillFloat"
+                  name="tillFloat"
+                  value=""
+                  formControlName="till_float"
+                  placeholder=" Till Float"
+                  style="
+                    width: 200px;
+                    height: 37px;
+                    margin-left: 36px;
+                    border-style: solid;
+                    border-color: white white black white;
+                  "
+                />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <div class="icon">
+                    <i
+                      class="fas fa-pound-sign"
+                      style="top: 29px; position: relative; margin-left: 35px"
+                    ></i>
+                    <input
+                      required
+                      type="number"
+                      class="form-control"
+                      id="salesCash"
+                      name="salesCash"
+                      formControlName="sales_cash"
+                      placeholder="Sales Cash"
+                      value=""
+                      style="
+                        width: 200px;
+                        height: 37px;
+                        margin-left: 35px;
+                        border-style: solid;
+                        border-color: white white black white;
+                      "
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <div class="icon">
+                    <i
+                      class="fas fa-pound-sign"
+                      style="top: 29px; position: relative;margin-left: 20px"
+                    ></i>
+                    <input
+                      required
+                      type="number"
+                      class="form-control"
+                      id="misCash"
+                      name="misCash"
+                      formControlName="mis_cash"
+                      placeholder="Misc/Other Expenditure"
+                      value=""
+                      style="
+                        width: 200px;
+                        height: 37px;
+                        margin-left: 20px;
+                        border-style: solid;
+                        border-color: white white black white;
+                      "
+                    />
+                  </div>
+                </div>
+              </div>
+              </div>
+            
+
+
+              <div class="col-md-6">
+                <div class="form-group">
+                    <input
+                      required
+                      type="number"
+                      class="form-control"
+                      placeholder="Please give details if any misc or other expenditure"
+                      value=""
+                      style="
+                        width: 470px;
+                        height: 50px;
+                        margin-left: 34px;
+                        border-style: solid;
+                        border-color: white white black white;
+                      "
+                    />
+                </div>
+              </div>
+
+
+            </div>
+
+          </div>
+     
+    </form>
+  </ng-template>
+</div>

@@ -1,0 +1,73 @@
+<section>
+  <!-- First heading row -->
+  <div class="d-flex justify-content-between">
+    <div class="left-header" style="cursor: pointer">
+      <div class="h4">Safe Summary</div>
+    </div>
+
+    <div class="right-header">
+      <div class="d-flex">
+        <div class="duration" (click)="reset_deposits('W')" [class.active]="deposits_filter == 'W'">
+          W
+        </div>
+        <div class="duration" (click)="reset_deposits('M')" [class.active]="deposits_filter == 'M'">
+          M
+        </div>
+        <div class="duration" (click)="reset_deposits('Y')" [class.active]="deposits_filter == 'Y'">
+          Y
+        </div>
+        <div><i class="fa fa-calendar mx-3"></i></div>
+      </div>
+    </div>
+
+  </div><br>
+
+  <div class="container mt-1">
+    <div class="row">
+      <div class="col-md-2">
+        <div class="card" style="height: 100%">
+          <div class="card-body d-flex justify-content-around flex-column">
+            <div class="text-muted fa-1x"><small>Last Declaration: 23/07/2021</small> </div>
+            <div class="draft-heading">Safe Float</div>
+            <div><br>
+              <div class="draft-heading">{{SafeSummaryValue[0].safeFloat | currency: "GBP"}}</div>
+             
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-2">
+        <div class="card" style="cursor: pointer; height: 100%">
+          <div class="card-body d-flex justify-content-around flex-column">
+            <div class="text-muted fa-1x"><small>Last Declaration: 23/07/2021</small> </div>
+            <div class="draft-heading">Till Float</div>
+            <div><br>
+              <div class="draft-heading">{{SafeSummaryValue[0].tillFloat| currency: "GBP"}}</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-2">
+        <div class="card" style="cursor: pointer; height: 100%">
+          <div class="card-body d-flex justify-content-around flex-column">
+            <div class="text-muted fa-1x"><small>Last Declaration: 23/07/2021</small> </div>
+            <div class="draft-heading">Sales Cash</div>
+            <div><br>
+              <div class="draft-heading">{{SafeSummaryValue[0].salesCash| currency: "GBP" }}</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <router-outlet></router-outlet>
+</section>

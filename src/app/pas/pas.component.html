@@ -1,0 +1,6 @@
+<ngx-one-column-layout>
+    <!-- <nb-menu [items]="menu"></nb-menu -->
+        <ngx-sidebar *ngIf="router.url !== '/PAS/cash-up/new-cashup' && router.url !== '/PAS/cash-up/edit-cashup'"></ngx-sidebar>
+        
+            <router-outlet></router-outlet>
+        </ngx-one-column-layout>
